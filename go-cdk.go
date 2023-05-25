@@ -22,7 +22,9 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 
 	// The code that defines your stack goes here
 	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
-		Versioned: jsii.Bool(true),
+		Versioned:         jsii.Bool(true),
+		RemovalPolicy:     awscdk.RemovalPolicy_DESTROY,
+		AutoDeleteObjects: jsii.Bool(true),
 	})
 
 	return
