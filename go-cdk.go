@@ -26,6 +26,12 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Handler: jsii.String("hello.handler"),
 	})
 
+	awslambda.NewFunction(stack, jsii.String("GoHelloHandler"), &awslambda.FunctionProps{
+		Code:    awslambda.Code_FromAsset(jsii.String("lambda"), nil),
+		Runtime: awslambda.Runtime_GO_1_X(),
+		Handler: jsii.String("main.HandleRequest"),
+	})
+
 	return
 }
 
