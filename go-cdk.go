@@ -13,19 +13,19 @@ type GoCdkStackProps struct {
 	awscdk.StackProps
 }
 
-func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps) awscdk.Stack {
+func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps) (stack awscdk.Stack) {
 	var sprops awscdk.StackProps
 	if props != nil {
 		sprops = props.StackProps
 	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
+	stack = awscdk.NewStack(scope, &id, &sprops)
 
 	// The code that defines your stack goes here
 	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
 		Versioned: jsii.Bool(true),
 	})
 
-	return stack
+	return
 }
 
 func main() {
