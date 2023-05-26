@@ -3,19 +3,23 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// create lambda function returning hello world and 200 status.
-
-type MyEvent struct {
-	Name string `json:"name"`
-}
-
 // handler handles incoming lambda request.
-func handler(ctx context.Context, name MyEvent) (string, error) {
-	return fmt.Sprintf("Hello, %s", name.Name), nil
+func handler(ctx context.Context, request events.APIGatewayProxyRequest) (response events.APIGatewayProxyResponse, err error) {
+	fmt.Printf("request: %s\n", request.Body)
+
+	response = events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Headers:    map[string]string{"Content-Type": "text/plain"},
+		Body:       fmt.Sprintf("Good Morning, CDK! You've hit %s\n", request.Path),
+	}
+
+	return
 }
+
 func main() {
 	lambda.Start(handler)
 }
