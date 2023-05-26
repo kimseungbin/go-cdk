@@ -4,7 +4,7 @@ import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 
-	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+	"github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
@@ -21,15 +21,14 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 	stack = awscdk.NewStack(scope, &id, &sprops)
 
 	awslambda.NewFunction(stack, jsii.String("HelloHandler"), &awslambda.FunctionProps{
-		Code:    awslambda.Code_FromAsset(jsii.String("lambda"), nil),
+		Code:    awslambda.Code_FromAsset(jsii.String("lambda/js"), nil),
 		Runtime: awslambda.Runtime_NODEJS_18_X(),
 		Handler: jsii.String("hello.handler"),
 	})
 
-	awslambda.NewFunction(stack, jsii.String("GoHelloHandler"), &awslambda.FunctionProps{
-		Code:    awslambda.Code_FromAsset(jsii.String("lambda"), nil),
+	awscdklambdagoalpha.NewGoFunction(stack, jsii.String("GoHelloHandler"), &awscdklambdagoalpha.GoFunctionProps{
 		Runtime: awslambda.Runtime_GO_1_X(),
-		Handler: jsii.String("main.HandleRequest"),
+		Entry:   jsii.String("lambda/go"),
 	})
 
 	return
