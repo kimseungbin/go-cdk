@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 
 	"github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
@@ -26,9 +27,13 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Handler: jsii.String("hello.handler"),
 	})
 
-	awscdklambdagoalpha.NewGoFunction(stack, jsii.String("GoHelloHandler"), &awscdklambdagoalpha.GoFunctionProps{
+	goodMorningHandler := awscdklambdagoalpha.NewGoFunction(stack, jsii.String("GoHelloHandler"), &awscdklambdagoalpha.GoFunctionProps{
 		Runtime: awslambda.Runtime_GO_1_X(),
 		Entry:   jsii.String("lambda/go"),
+	})
+
+	awsapigateway.NewLambdaRestApi(stack, jsii.String("Endpoint"), &awsapigateway.LambdaRestApiProps{
+		Handler: goodMorningHandler,
 	})
 
 	return
