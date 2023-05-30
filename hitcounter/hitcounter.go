@@ -1,6 +1,7 @@
 package hitcounter
 
 import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsdynamodb"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 	"github.com/aws/constructs-go/constructs/v10"
@@ -31,6 +32,7 @@ func NewHitCounter(scope constructs.Construct, id string, props *HitCounterProps
 			Name: jsii.String("path"),
 			Type: awsdynamodb.AttributeType_STRING,
 		},
+		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 	})
 	handler := awslambda.NewFunction(this, jsii.String("HitCounterHandler"), &awslambda.FunctionProps{
 		Runtime: awslambda.Runtime_NODEJS_16_X(),
