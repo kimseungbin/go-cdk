@@ -15,11 +15,13 @@ type HitCounterProps struct {
 type hitCounter struct {
 	constructs.Construct
 	handler awslambda.IFunction
+	table   awsdynamodb.Table
 }
 
 type HitCounter interface {
 	constructs.Construct
 	Handler() awslambda.IFunction
+	Table() awsdynamodb.Table
 }
 
 func NewHitCounter(scope constructs.Construct, id string, props *HitCounterProps) HitCounter {
@@ -42,9 +44,13 @@ func NewHitCounter(scope constructs.Construct, id string, props *HitCounterProps
 
 	table.GrantReadWriteData(handler)
 	props.Downstream.GrantInvoke(handler)
-	return &hitCounter{this, handler}
+	return &hitCounter{this, handler, table}
 }
 
 func (h *hitCounter) Handler() awslambda.IFunction {
 	return h.handler
+}
+
+func (h *hitCounter) Table() awsdynamodb.Table {
+	return h.table
 }
