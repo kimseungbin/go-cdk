@@ -43,8 +43,9 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 	})
 
 	dynamotableviewer.NewTableViewer(stack, jsii.String("ViewHitcounter"), &dynamotableviewer.TableViewerProps{
-		Title: jsii.String("Hello Hits"),
-		Table: hitcounter.Table(),
+		Title:  jsii.String("Hello Hits"),
+		Table:  hitcounter.Table(),
+		SortBy: jsii.String("-hits"),
 	})
 
 	return
