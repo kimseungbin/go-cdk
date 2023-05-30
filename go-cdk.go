@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+	"go-cdk/hitcounter"
 
 	"github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
@@ -32,8 +33,12 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Entry:   jsii.String("lambda/go"),
 	})
 
+	hitcounter := hitcounter.NewHitCounter(stack, "HelloHitCounter", &hitcounter.HitCounterProps{
+		Downstream: goodMorningHandler,
+	})
+
 	awsapigateway.NewLambdaRestApi(stack, jsii.String("Endpoint"), &awsapigateway.LambdaRestApiProps{
-		Handler: goodMorningHandler,
+		Handler: hitcounter.Handler(),
 	})
 
 	return
