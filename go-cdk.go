@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 	"github.com/cdklabs/cdk-dynamo-table-viewer-go/dynamotableviewer"
 	"go-cdk/hitcounter"
@@ -34,17 +33,13 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Entry:   jsii.String("lambda/go"),
 	})
 
-	hitcounter := hitcounter.NewHitCounter(stack, "HelloHitCounter", &hitcounter.HitCounterProps{
+	counter := hitcounter.NewHitCounter(stack, "HelloHitCounter", &hitcounter.HitCounterProps{
 		Downstream: goodMorningHandler,
-	})
-
-	awsapigateway.NewLambdaRestApi(stack, jsii.String("Endpoint"), &awsapigateway.LambdaRestApiProps{
-		Handler: hitcounter.Handler(),
 	})
 
 	dynamotableviewer.NewTableViewer(stack, jsii.String("ViewHitcounter"), &dynamotableviewer.TableViewerProps{
 		Title:  jsii.String("Hello Hits"),
-		Table:  hitcounter.Table(),
+		Table:  counter.Table(),
 		SortBy: jsii.String("-hits"),
 	})
 
